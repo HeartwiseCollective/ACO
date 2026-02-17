@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>American Canyon Orthodontics — Brand Evolution</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: #FAF7F4;
+    color: #2D3A4A;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .section { display: none; min-height: 100vh; }
+  .section.active { display: flex; flex-direction: column; }
+  .section.active > * { animation: fadeUp 0.8s cubic-bezier(0.23,1,0.32,1) forwards; }
+  .section.active > *:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+  .section.active > *:nth-child(2) { animation-delay: 0.2s; opacity: 0; }
+  .section.active > *:nth-child(3) { animation-delay: 0.35s; opacity: 0; }
+  .section.active > *:nth-child(4) { animation-delay: 0.5s; opacity: 0; }
+  .section.active > *:nth-child(5) { animation-delay: 0.65s; opacity: 0; }
+  .section.active > *:nth-child(6) { animation-delay: 0.8s; opacity: 0; }
+
+  /* Navigation */
+  .nav-bar {
+    position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 12px; z-index: 100;
+  }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 1.5px solid #C4704A; background: transparent;
+    cursor: pointer; transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    padding: 0; outline: none;
+  }
+  .nav-dot:hover, .nav-dot.active { background: #C4704A; transform: scale(1.4); }
+
+  /* Utility classes */
+  .accent { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #C4704A; }
+  .title { font-family: 'Playfair Display', serif; font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; }
+  .body { font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.8; font-size: 15px; }
+  .note { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; border-left: 2px solid #C4704A; padding-left: 20px; color: #8A7968; }
+
+  /* Color swatches */
+  .swatch { transition: all 0.5s cubic-bezier(0.23,1,0.32,1); cursor: pointer; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 150px; }
+  .swatch:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+  .swatch-label { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .swatch-hex { font-family: 'DM Sans', sans-serif; font-size: 10px; }
+  .swatch-note { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; margin-top: 8px; display: none; }
+  .swatch:hover .swatch-note { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Logo cards */
+  .logo-card {
+    background: #fff; border-radius: 20px; padding: 32px; cursor: pointer;
+    border: 2px solid transparent; transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
+    display: flex; flex-direction: column;
+  }
+  .logo-card:hover, .logo-card.selected { border-color: #C4704A; transform: translateY(-4px); box-shadow: 0 16px 48px rgba(196,112,74,0.12); }
+  .logo-card .logo-preview {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; min-height: 200px; padding: 24px; margin-bottom: 24px;
+    transition: background 0.5s ease;
+  }
+
+  /* Grain overlay */
+  .grain {
+    position: fixed; top: -50%; left: -50%; right: -50%; bottom: -50%;
+    width: 200%; height: 200%; pointer-events: none; z-index: 1000; opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- Navigation dots -->
+<div class="nav-bar" id="nav">
+  <button class="nav-dot active" onclick="goTo(0)" title="Première Impression"></button>
+  <button class="nav-dot" onclick="goTo(1)" title="The Problem"></button>
+  <button class="nav-dot" onclick="goTo(2)" title="Color Evolution"></button>
+  <button class="nav-dot" onclick="goTo(3)" title="Typography"></button>
+  <button class="nav-dot" onclick="goTo(4)" title="Logo Concepts"></button>
+  <button class="nav-dot" onclick="goTo(5)" title="Brand System"></button>
+  <button class="nav-dot" onclick="goTo(6)" title="Digital Vision"></button>
+  <button class="nav-dot" onclick="goTo(7)" title="The Verdict"></button>
+</div>
+
+<!-- ==================== SECTION 0: HERO ==================== -->
+<div class="section active" id="s0" style="justify-content:center;align-items:center;padding:60px 40px;position:relative;background:linear-gradient(160deg,#2D3A4A 0%,#1A2530 40%,#2D3A4A 100%);">
+  <svg style="position:absolute;bottom:0;left:0;right:0;opacity:.06;width:100%" viewBox="0 0 1200 300" fill="none"><path d="M0 300 L0 180 Q150 40 300 120 Q400 180 500 80 Q580 20 650 100 Q750 200 850 60 Q950 -20 1050 100 Q1120 160 1200 80 L1200 300Z" fill="#C4704A"/></svg>
+  <p class="accent" style="color:#C4704A;margin-bottom:32px;letter-spacing:0.3em;text-align:center;position:relative;z-index:2;">Brand Evolution Concept</p>
+  <h1 class="title" style="font-size:clamp(42px,6vw,80px);color:#FAF7F4;text-align:center;margin-bottom:24px;letter-spacing:-0.03em;position:relative;z-index:2;">American Canyon<br><span style="font-style:italic;color:#C4704A;">Orthodontics</span></h1>
+  <div style="width:80px;height:1px;background:linear-gradient(90deg,transparent,#C4704A,transparent);margin:16px auto 32px;position:relative;z-index:2;"></div>
+  <p class="note" style="max-width:600px;text-align:center;font-size:20px;color:#A09888;border-left:none;padding-left:0;line-height:1.7;position:relative;z-index:2;">A brand redesign presentation for Dr. Nichelini &amp; Dr. Cozin.<br>Prepared with care, ambition, and a touch of French audacity.</p>
+  <p style="margin-top:60px;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.15em;color:#6A7A8A;text-transform:uppercase;position:relative;z-index:2;">Use the dots on the right to navigate →</p>
+</div>
+
+<!-- ==================== SECTION 1: THE PROBLEM ==================== -->
+<div class="section" id="s1" style="justify-content:center;padding:80px 40px;max-width:900px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">01 — Honest Assessment</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,52px);margin-bottom:40px;">Your brand is working<br><span style="font-style:italic;color:#C4704A;">against</span> you.</h2>
+  <div class="body" style="margin-bottom:40px;">
+    <p style="margin-bottom:20px;">I want to be direct with you — because that's what $2,000/hour buys. Your current logo and brand identity have the warmth and community spirit that clearly matters to your practice. The mountain imagery, the "Building Smiles for a Lifetime" tagline — these show heart.</p>
+    <p style="margin-bottom:20px;">But the execution reads as <strong>early 2000s clip-art</strong>. The gradient mountains, the competing orange and blue, the dated script font — they signal a practice that hasn't evolved. And I know that's not true.</p>
+    <p>You have two accomplished doctors building something lasting. Your brand needs to match that ambition.</p>
+  </div>
+  <div style="background:#2D3A4A;border-radius:16px;padding:40px;color:#FAF7F4;">
+    <p class="accent" style="margin-bottom:20px;">What I see in the current brand</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">Gradient Mountains</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Reads as stock imagery, not custom identity</p></div>
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">Color Clash</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Orange + blue fight each other instead of harmonizing</p></div>
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">Script Tagline</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Casual script undermines clinical credibility</p></div>
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">No Hierarchy</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Everything competes for attention, nothing leads</p></div>
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">Two Doctor Names</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Listed equally but no visual system to unify them</p></div>
+      <div style="padding:16px 0;border-top:1px solid rgba(196,112,74,0.3);"><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;margin-bottom:6px;">Scalability</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#A09888;">Logo breaks at small sizes — favicon, social, embroidery</p></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:40px;font-size:17px;">"The bones are good — the mountain connection, the warmth, the community feel. We're not starting over. We're elevating."</p>
+</div>
+
+<!-- ==================== SECTION 2: COLOR EVOLUTION ==================== -->
+<div class="section" id="s2" style="padding:80px 40px;max-width:1000px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">02 — Color Palette</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,48px);margin-bottom:16px;">From clip-art to <span style="font-style:italic;color:#C4704A;">canyon sunset</span></h2>
+  <p class="body" style="max-width:650px;margin-bottom:48px;color:#6A7A8A;">Your practice sits in American Canyon — one of the most beautiful landscapes in California. Let's borrow from nature's palette instead of a default color picker.</p>
+
+  <div style="margin-bottom:48px;">
+    <p class="accent" style="margin-bottom:16px;color:#999;">Current Palette</p>
+    <div style="display:flex;gap:16px;margin-bottom:40px;">
+      <div class="swatch" style="flex:1;background:#E8832A;position:relative;overflow:hidden;"><div style="position:absolute;top:50%;left:-10px;right:-10px;height:2px;background:rgba(255,0,0,0.3);transform:rotate(-5deg);"></div><span class="swatch-label" style="color:#fff;opacity:0.8;">Canyon Orange</span><span class="swatch-hex" style="color:rgba(255,255,255,0.6);">#E8832A</span></div>
+      <div class="swatch" style="flex:1;background:#36A9E1;position:relative;overflow:hidden;"><div style="position:absolute;top:50%;left:-10px;right:-10px;height:2px;background:rgba(255,0,0,0.3);transform:rotate(-5deg);"></div><span class="swatch-label" style="color:#fff;opacity:0.8;">Sky Blue</span><span class="swatch-hex" style="color:rgba(255,255,255,0.6);">#36A9E1</span></div>
+      <div class="swatch" style="flex:1;background:#FFFFFF;border:1px solid #eee;position:relative;overflow:hidden;"><div style="position:absolute;top:50%;left:-10px;right:-10px;height:2px;background:rgba(255,0,0,0.3);transform:rotate(-5deg);"></div><span class="swatch-label" style="color:#999;">White</span><span class="swatch-hex" style="color:#bbb;">#FFFFFF</span></div>
+    </div>
+  </div>
+
+  <div>
+    <p class="accent" style="margin-bottom:16px;">Proposed Palette</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;">
+      <div class="swatch" style="background:#C4704A;"><span class="swatch-label" style="color:#FAF7F4;">Canyon Clay</span><span class="swatch-hex" style="color:rgba(250,247,244,0.6);">#C4704A</span><span class="swatch-note" style="color:rgba(250,247,244,0.7);">Earthen warmth, grounded luxury</span></div>
+      <div class="swatch" style="background:#2D3A4A;"><span class="swatch-label" style="color:#FAF7F4;">Napa Dusk</span><span class="swatch-hex" style="color:rgba(250,247,244,0.6);">#2D3A4A</span><span class="swatch-note" style="color:rgba(250,247,244,0.7);">Sophisticated navy, trust & authority</span></div>
+      <div class="swatch" style="background:#E8DDD3;border:1px solid #ddd;"><span class="swatch-label" style="color:#2D3A4A;">Canyon Stone</span><span class="swatch-hex" style="color:#8A7968;">#E8DDD3</span><span class="swatch-note" style="color:#8A7968;">Warm neutral, premium feel</span></div>
+      <div class="swatch" style="background:#D4956B;"><span class="swatch-label" style="color:#FAF7F4;">Terracotta Gold</span><span class="swatch-hex" style="color:rgba(250,247,244,0.6);">#D4956B</span><span class="swatch-note" style="color:rgba(250,247,244,0.7);">Accent, warmth without childishness</span></div>
+      <div class="swatch" style="background:#8FA89A;"><span class="swatch-label" style="color:#FAF7F4;">Sage Mist</span><span class="swatch-hex" style="color:rgba(250,247,244,0.6);">#8FA89A</span><span class="swatch-note" style="color:rgba(250,247,244,0.7);">Natural calm, healing energy</span></div>
+      <div class="swatch" style="background:#FAF7F4;border:1px solid #ddd;"><span class="swatch-label" style="color:#2D3A4A;">Warm White</span><span class="swatch-hex" style="color:#8A7968;">#FAF7F4</span><span class="swatch-note" style="color:#8A7968;">Soft canvas, never stark</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;background:linear-gradient(135deg,#2D3A4A,#3A4858);border-radius:16px;padding:40px;display:flex;gap:20px;align-items:flex-start;">
+    <div style="width:4px;min-height:60px;background:#C4704A;border-radius:2px;flex-shrink:0;margin-top:4px;"></div>
+    <div>
+      <p style="font-family:'Playfair Display',serif;font-size:20px;color:#FAF7F4;margin-bottom:12px;">The Philosophy</p>
+      <p class="body" style="color:#A0B0B8;line-height:1.9;">Every color is pulled from the American Canyon landscape — the warm terracotta of sun-baked hills, the deep navy of twilight over the valley, the sage of wild coastal scrub. This palette doesn't just look premium — it tells your geographic story.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: TYPOGRAPHY ==================== -->
+<div class="section" id="s3" style="justify-content:center;padding:80px 40px;max-width:900px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">03 — Typography</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,48px);margin-bottom:40px;">Words should feel like<br><span style="font-style:italic;color:#C4704A;">a warm handshake</span></h2>
+
+  <div style="margin-bottom:48px;">
+    <div style="background:#2D3A4A;border-radius:20px;padding:48px 40px;margin-bottom:24px;">
+      <p class="accent" style="margin-bottom:12px;opacity:0.7;">Primary Headlines</p>
+      <p style="font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:400;color:#FAF7F4;line-height:1.1;letter-spacing:-0.02em;">Playfair Display</p>
+      <p style="font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:400;font-style:italic;color:#C4704A;line-height:1.1;letter-spacing:-0.02em;">Italic for warmth</p>
+      <p class="body" style="color:#8A9AA8;margin-top:20px;max-width:500px;">Elegant, editorial, and warm. Playfair Display carries the gravitas of a specialist practice while remaining approachable.</p>
+    </div>
+    <div style="background:#E8DDD3;border-radius:20px;padding:48px 40px;margin-bottom:24px;">
+      <p class="accent" style="margin-bottom:12px;">Body &amp; Interface</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:clamp(28px,3.5vw,44px);font-weight:300;color:#2D3A4A;line-height:1.2;">DM Sans Light</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:clamp(28px,3.5vw,44px);font-weight:500;color:#2D3A4A;line-height:1.2;margin-bottom:20px;">DM Sans Medium</p>
+      <p class="body" style="color:#5A6A6A;max-width:500px;">Clean, geometric, beautifully legible. Pairs beautifully with Playfair's organic curves.</p>
+    </div>
+  </div>
+
+  <div style="border:1px solid #E8DDD3;border-radius:20px;padding:48px;text-align:center;">
+    <p class="accent" style="margin-bottom:32px;">In Practice</p>
+    <p style="font-family:'Playfair Display',serif;font-size:32px;color:#2D3A4A;margin-bottom:8px;">Building Smiles That Last</p>
+    <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:15px;color:#8A7968;max-width:480px;margin:0 auto;line-height:1.8;">Dr. Nichelini and Dr. Cozin bring decades of combined expertise to every smile they create. Because at American Canyon Orthodontics, we believe lasting results begin with lasting relationships.</p>
+  </div>
+  <p class="note" style="margin-top:40px;font-size:17px;">"Typography is the voice of your brand when you're not in the room."</p>
+</div>
+
+<!-- ==================== SECTION 4: LOGO CONCEPTS ==================== -->
+<div class="section" id="s4" style="padding:80px 40px;max-width:1000px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">04 — Logo Concepts</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,48px);margin-bottom:16px;">Three directions,<br><span style="font-style:italic;color:#C4704A;">one conversation</span></h2>
+  <p class="body" style="max-width:600px;margin-bottom:48px;color:#6A7A8A;">Click each concept to explore. These are directional — the real magic happens when you tell me which one makes your heart beat faster.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+    <!-- Logo 1: Canyon Majesty -->
+    <div class="logo-card selected" id="logo0" onclick="selectLogo(0)">
+      <div class="logo-preview" id="lp0" style="background:#2D3A4A;">
+        <svg viewBox="0 0 200 90" width="200">
+          <defs>
+            <linearGradient id="hg1a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D4956B"/><stop offset="100%" stop-color="#C4704A"/></linearGradient>
+            <linearGradient id="hg1b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4704A"/><stop offset="100%" stop-color="#A85D3A" stop-opacity="0.8"/></linearGradient>
+          </defs>
+          <polygon points="10,72 72,12 134,72" fill="url(#hg1a)"/>
+          <polygon points="75,72 140,18 200,72" fill="url(#hg1b)" opacity="0.85"/>
+          <line x1="0" y1="72" x2="200" y2="72" stroke="#FAF7F4" stroke-width="0.5" opacity="0.2"/>
+          <text x="100" y="86" text-anchor="middle" fill="#FAF7F4" style="font-family:'Playfair Display',serif;font-size:9px;letter-spacing:0.18em;">AMERICAN CANYON</text>
+        </svg>
+      </div>
+      <p class="accent" style="margin-bottom:8px;">Bold &amp; Grounded</p>
+      <p style="font-family:'Playfair Display',serif;font-size:22px;color:#2D3A4A;margin-bottom:12px;">Canyon Majesty</p>
+      <p class="body" style="color:#8A7968;font-size:13px;">The iconic twin peaks rendered with bold, confident geometry — filled forms with gradient warmth that captures golden hour on the hills. Unmistakably American Canyon.</p>
+    </div>
+
+    <!-- Logo 2: Ridgeline -->
+    <div class="logo-card" id="logo1" onclick="selectLogo(1)">
+      <div class="logo-preview" id="lp1" style="background:#F5F0EB;">
+        <svg viewBox="0 0 200 90" width="200">
+          <path d="M12,68 L72,10 L132,68" fill="none" stroke="#2D3A4A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M76,68 L138,16 L198,68" fill="none" stroke="#8A7968" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <line x1="5" y1="70" x2="200" y2="70" stroke="#2D3A4A" stroke-width="0.5" opacity="0.25"/>
+          <text x="105" y="84" text-anchor="middle" fill="#2D3A4A" style="font-family:'DM Sans',sans-serif;font-size:7px;font-weight:500;letter-spacing:0.25em;">AMERICAN CANYON ORTHODONTICS</text>
+        </svg>
+      </div>
+      <p class="accent" style="margin-bottom:8px;">Modern Heritage</p>
+      <p style="font-family:'Playfair Display',serif;font-size:22px;color:#2D3A4A;margin-bottom:12px;">Ridgeline</p>
+      <p class="body" style="color:#8A7968;font-size:13px;">The twin peaks as elegant outlines — sophisticated, modern, but the mountains are front and center. You know exactly where this practice calls home.</p>
+    </div>
+
+    <!-- Logo 3: Canyon Crest -->
+    <div class="logo-card" id="logo2" onclick="selectLogo(2)">
+      <div class="logo-preview" id="lp2" style="background:#F5F0EB;">
+        <svg viewBox="0 0 160 140" width="150">
+          <defs>
+            <clipPath id="cc"><path d="M80 8 C130 8 148 28 148 50 L148 90 C148 120 115 132 80 132 C45 132 12 120 12 90 L12 50 C12 28 30 8 80 8Z"/></clipPath>
+            <linearGradient id="ch1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2D3A4A"/><stop offset="100%" stop-color="#1A2530"/></linearGradient>
+          </defs>
+          <path d="M80 8 C130 8 148 28 148 50 L148 90 C148 120 115 132 80 132 C45 132 12 120 12 90 L12 50 C12 28 30 8 80 8Z" fill="none" stroke="#2D3A4A" stroke-width="1.5"/>
+          <polygon points="30,98 62,42 94,98" fill="url(#ch1)" clip-path="url(#cc)" opacity="0.75"/>
+          <polygon points="68,98 102,48 136,98" fill="#5A6A6A" clip-path="url(#cc)" opacity="0.55"/>
+          <text x="80" y="112" text-anchor="middle" fill="#2D3A4A" style="font-family:'Playfair Display',serif;font-size:7px;letter-spacing:0.12em;">AMERICAN CANYON</text>
+          <text x="80" y="122" text-anchor="middle" fill="#8A7968" style="font-family:'DM Sans',sans-serif;font-size:5px;letter-spacing:0.22em;">ORTHODONTICS</text>
+        </svg>
+      </div>
+      <p class="accent" style="margin-bottom:8px;">Legacy Crest</p>
+      <p style="font-family:'Playfair Display',serif;font-size:22px;color:#2D3A4A;margin-bottom:12px;">Canyon Crest</p>
+      <p class="body" style="color:#8A7968;font-size:13px;">The peaks sit proudly above the practice name, framed as a crest — giving the brand an established, legacy feel. The kind of mark you'd see etched in stone at the office entrance.</p>
+    </div>
+  </div>
+  <p class="note" style="margin-top:40px;font-size:17px;">"Those peaks are your practice's signature — the skyline your patients see every day. We don't reinvent the mountain. We give it the respect and refinement it deserves."</p>
+</div>
+
+<!-- ==================== SECTION 5: BRAND SYSTEM ==================== -->
+<div class="section" id="s5" style="padding:80px 40px;max-width:1000px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">05 — Brand System</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,48px);margin-bottom:40px;">More than a logo —<br><span style="font-style:italic;color:#C4704A;">a complete visual language</span></h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+    <!-- Business Card -->
+    <div style="background:#2D3A4A;border-radius:16px;padding:40px;aspect-ratio:1.6/1;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
+      <svg style="position:absolute;top:-20px;right:-20px;opacity:0.05;" viewBox="0 0 200 120" width="200" fill="none"><path d="M20 100 Q50 20 90 60 Q110 30 130 50 Q160 10 180 100" stroke="#C4704A" stroke-width="3"/></svg>
+      <div><p style="font-family:'Playfair Display',serif;font-size:18px;color:#FAF7F4;margin-bottom:2px;">Jeffrey A. Nichelini</p><p style="font-family:'DM Sans',sans-serif;font-size:11px;color:#C4704A;letter-spacing:0.1em;">DDS, MS</p></div>
+      <div><p style="font-family:'DM Sans',sans-serif;font-size:10px;color:#8A9AA8;line-height:1.8;">American Canyon Orthodontics<br>americancanyonortho.com</p></div>
+    </div>
+    <!-- Pattern -->
+    <div style="background:#E8DDD3;border-radius:16px;padding:40px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+      <p class="accent" style="margin-bottom:20px;">Brand Pattern</p>
+      <svg viewBox="0 0 200 200" width="160" fill="none" style="opacity:0.5;">
+        <path d="M0 40 Q50 0 100 25 Q150 5 200 40" stroke="#C4704A" stroke-width="0.8" opacity="0.5"/>
+        <path d="M0 80 Q50 40 100 65 Q150 45 200 80" stroke="#C4704A" stroke-width="0.8" opacity="0.5"/>
+        <path d="M0 120 Q50 80 100 105 Q150 85 200 120" stroke="#C4704A" stroke-width="0.8" opacity="0.5"/>
+        <path d="M0 160 Q50 120 100 145 Q150 125 200 160" stroke="#C4704A" stroke-width="0.8" opacity="0.5"/>
+        <path d="M0 200 Q50 160 100 185 Q150 165 200 200" stroke="#C4704A" stroke-width="0.8" opacity="0.5"/>
+      </svg>
+      <p style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A7968;margin-top:16px;text-align:center;">Canyon ridge pattern — versatile for<br>stationery, walls, packaging</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <!-- Tagline -->
+    <div style="border:1px solid #E8DDD3;border-radius:16px;padding:40px;display:flex;flex-direction:column;justify-content:center;">
+      <p class="accent" style="margin-bottom:20px;">Tagline Evolution</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:14px;color:#bbb;text-decoration:line-through;margin-bottom:16px;">"Building Smiles for a lifetime"</p>
+      <p style="font-family:'Playfair Display',serif;font-size:24px;color:#2D3A4A;line-height:1.3;margin-bottom:8px;">"Smiles rooted in expertise."</p>
+      <p class="body" style="color:#8A7968;font-size:13px;">Grounded. Confident. Connects "rooted" to the canyon landscape and to lasting orthodontic foundations.</p>
+    </div>
+    <!-- Icons -->
+    <div style="border:1px solid #E8DDD3;border-radius:16px;padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+      <p class="accent">Icon Style</p>
+      <div style="display:flex;gap:24px;">
+        <svg viewBox="0 0 40 40" width="40" fill="none"><path d="M10 30 L15 10 L20 20 L25 8 L30 30" stroke="#C4704A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 40 40" width="40" fill="none"><circle cx="20" cy="20" r="12" stroke="#2D3A4A" stroke-width="1.5"/><path d="M12 24 L16 14 L20 20 L24 12 L28 24" stroke="#C4704A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 40 40" width="40" fill="none"><rect x="8" y="8" width="24" height="24" rx="4" stroke="#2D3A4A" stroke-width="1.5"/><path d="M14 26 L18 16 L22 22 L26 12 L30 26" stroke="#C4704A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A7968;text-align:center;">Thin-line icons with peak motifs<br>for consistent visual language</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: DIGITAL VISION ==================== -->
+<div class="section" id="s6" style="padding:80px 40px;max-width:1000px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">06 — Digital Presence</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,48px);margin-bottom:40px;">The website that <span style="font-style:italic;color:#C4704A;">converts</span></h2>
+
+  <div style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 20px 80px rgba(45,58,74,0.12);margin-bottom:40px;">
+    <!-- Browser chrome -->
+    <div style="background:#F5F0EB;padding:12px 20px;display:flex;align-items:center;gap:8px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:rgba(232,131,42,0.25);"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:rgba(196,112,74,0.25);"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:rgba(143,168,154,0.25);"></div>
+      <div style="flex:1;background:#fff;border-radius:6px;padding:4px 12px;margin-left:12px;font-family:'DM Sans',sans-serif;font-size:11px;color:#aaa;">americancanyonortho.com</div>
+    </div>
+    <!-- Hero -->
+    <div style="background:linear-gradient(135deg,#2D3A4A,#3A4858);padding:60px 48px;position:relative;overflow:hidden;">
+      <svg style="position:absolute;bottom:0;left:0;right:0;opacity:0.04;width:100%;" viewBox="0 0 800 200" fill="none"><path d="M0 200 L0 120 Q100 20 200 80 Q300 140 400 60 Q500 0 600 80 Q700 140 800 40 L800 200Z" fill="#C4704A"/></svg>
+      <div style="position:relative;z-index:2;">
+        <nav style="display:flex;justify-content:space-between;align-items:center;margin-bottom:48px;">
+          <span style="font-family:'Playfair Display',serif;font-size:16px;color:#FAF7F4;">American Canyon <span style="color:#C4704A;">Orthodontics</span></span>
+          <div style="display:flex;gap:24px;"><span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A9AA8;">About</span><span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A9AA8;">Services</span><span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A9AA8;">Results</span><span style="font-family:'DM Sans',sans-serif;font-size:12px;color:#8A9AA8;">Contact</span></div>
+        </nav>
+        <p style="font-family:'Playfair Display',serif;font-size:36px;color:#FAF7F4;line-height:1.15;max-width:480px;margin-bottom:16px;">Smiles rooted<br><span style="font-style:italic;color:#C4704A;">in expertise.</span></p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:#8A9AA8;max-width:400px;line-height:1.7;margin-bottom:24px;">Dr. Nichelini and Dr. Cozin bring decades of specialized experience to every smile. Serving American Canyon and the surrounding Bay Area.</p>
+        <div style="display:inline-block;padding:12px 28px;background:#C4704A;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#FAF7F4;letter-spacing:0.05em;">Schedule a Consultation</div>
+      </div>
+    </div>
+    <!-- Content cards -->
+    <div style="padding:40px 48px;display:flex;gap:32px;">
+      <div style="flex:1;"><div style="width:32px;height:2px;background:#C4704A;margin-bottom:16px;"></div><p style="font-family:'Playfair Display',serif;font-size:16px;color:#2D3A4A;margin-bottom:8px;">Two Doctors, One Mission</p><p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8A7968;line-height:1.7;">Our dual-doctor approach means more expertise, more availability, and better outcomes.</p></div>
+      <div style="flex:1;"><div style="width:32px;height:2px;background:#C4704A;margin-bottom:16px;"></div><p style="font-family:'Playfair Display',serif;font-size:16px;color:#2D3A4A;margin-bottom:8px;">Invisalign Specialists</p><p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8A7968;line-height:1.7;">As Diamond+ providers, we offer the most advanced clear aligner treatments available.</p></div>
+      <div style="flex:1;"><div style="width:32px;height:2px;background:#C4704A;margin-bottom:16px;"></div><p style="font-family:'Playfair Display',serif;font-size:16px;color:#2D3A4A;margin-bottom:8px;">Family-Centered Care</p><p style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:#8A7968;line-height:1.7;">From first visits to final reveals, we make every family feel at home.</p></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div style="background:#E8DDD3;border-radius:16px;padding:32px;"><p class="accent" style="margin-bottom:12px;">Social Media</p><p class="body" style="color:#5A6A6A;">Cohesive templates for Instagram and Facebook — warm, editorial photography paired with the canyon color palette.</p></div>
+    <div style="background:#E8DDD3;border-radius:16px;padding:32px;"><p class="accent" style="margin-bottom:12px;">Patient Communications</p><p class="body" style="color:#5A6A6A;">Email templates, appointment reminders, and welcome packets — all branded consistently.</p></div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: THE VERDICT ==================== -->
+<div class="section" id="s7" style="justify-content:center;padding:80px 40px;max-width:900px;margin:0 auto;">
+  <p class="accent" style="margin-bottom:16px;">07 — The Verdict</p>
+  <h2 class="title" style="font-size:clamp(32px,4vw,52px);margin-bottom:40px;">Should you change <span style="font-style:italic;color:#C4704A;">the name?</span></h2>
+  <div class="body" style="margin-bottom:40px;">
+    <p style="margin-bottom:20px;font-size:17px;"><strong>No.</strong> "American Canyon Orthodontics" is a powerful name. It's geographic, it's memorable, and it anchors you to your community. The problem was never the name — it was the visual execution.</p>
+    <p>What I've shown you today is a brand that takes everything that was <em>right</em> about your identity — the warmth, the mountain connection, the community spirit — and elevates it to match the caliber of care you actually deliver.</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#2D3A4A,#3A4858);border-radius:20px;padding:48px;margin-bottom:40px;">
+    <p style="font-family:'Playfair Display',serif;font-size:24px;color:#FAF7F4;margin-bottom:24px;">Recommended Next Steps</p>
+    <div style="display:flex;gap:20px;padding:20px 0;"><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#C4704A;letter-spacing:0.1em;min-width:30px;">01</span><div><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:#FAF7F4;margin-bottom:4px;">Choose a Logo Direction</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#8A9AA8;">Tell me which of the three concepts speaks to you — or if you want to explore a hybrid.</p></div></div>
+    <div style="display:flex;gap:20px;padding:20px 0;border-top:1px solid rgba(196,112,74,0.2);"><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#C4704A;letter-spacing:0.1em;min-width:30px;">02</span><div><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:#FAF7F4;margin-bottom:4px;">Refine the Palette</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#8A9AA8;">We can adjust warmth, depth, and accents based on your office space and photography.</p></div></div>
+    <div style="display:flex;gap:20px;padding:20px 0;border-top:1px solid rgba(196,112,74,0.2);"><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#C4704A;letter-spacing:0.1em;min-width:30px;">03</span><div><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:#FAF7F4;margin-bottom:4px;">Full Brand Guide</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#8A9AA8;">Complete guide with logo files, color codes, typography specs, usage rules, and templates.</p></div></div>
+    <div style="display:flex;gap:20px;padding:20px 0;border-top:1px solid rgba(196,112,74,0.2);"><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#C4704A;letter-spacing:0.1em;min-width:30px;">04</span><div><p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:#FAF7F4;margin-bottom:4px;">Digital Rollout</p><p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:13px;color:#8A9AA8;">Website redesign, social media templates, and patient communication suite.</p></div></div>
+  </div>
+
+  <div style="text-align:center;padding:40px;">
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#8A7968;line-height:1.6;max-width:600px;margin:0 auto;">"A brand is not what you say it is.<br>It's what they feel it is.<br>Let's make them feel something unforgettable."</p>
+    <div style="width:40px;height:1px;background:#C4704A;margin:24px auto;"></div>
+    <p style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#bbb;">Brand Evolution Concept · February 2026</p>
+  </div>
+</div>
+
+<script>
+  let currentSection = 0;
+
+  function goTo(n) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-dot').forEach(d => d.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    document.querySelectorAll('.nav-dot')[n].classList.add('active');
+    currentSection = n;
+    window.scrollTo(0, 0);
+  }
+
+  function selectLogo(n) {
+    document.querySelectorAll('.logo-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('logo' + n).classList.add('selected');
+    
+    // Update backgrounds
+    for (let i = 0; i < 3; i++) {
+      document.getElementById('lp' + i).style.background = (i === n) ? '#2D3A4A' : '#F5F0EB';
+    }
+
+    // Update SVG colors for selected state
+    const svgs = document.querySelectorAll('.logo-card svg');
+    // Reset all to default dark colors, then highlight selected
+    // Logo 0
+    const l0polys = svgs[0].querySelectorAll('polygon');
+    const l0text = svgs[0].querySelector('text');
+    const l0line = svgs[0].querySelector('line');
+    if (n === 0) {
+      l0text.setAttribute('fill', '#FAF7F4');
+      l0line.setAttribute('stroke', '#FAF7F4');
+    } else {
+      l0text.setAttribute('fill', '#2D3A4A');
+      l0line.setAttribute('stroke', '#2D3A4A');
+    }
+
+    // Logo 1
+    const l1paths = svgs[1].querySelectorAll('path');
+    const l1text = svgs[1].querySelector('text');
+    const l1line = svgs[1].querySelector('line');
+    if (n === 1) {
+      l1paths[0].setAttribute('stroke', '#C4704A');
+      l1paths[1].setAttribute('stroke', '#D4956B');
+      l1text.setAttribute('fill', '#FAF7F4');
+      l1line.setAttribute('stroke', '#C4704A');
+    } else {
+      l1paths[0].setAttribute('stroke', '#2D3A4A');
+      l1paths[1].setAttribute('stroke', '#8A7968');
+      l1text.setAttribute('fill', '#2D3A4A');
+      l1line.setAttribute('stroke', '#2D3A4A');
+    }
+
+    // Logo 2
+    const l2path = svgs[2].querySelector('path');
+    const l2polys = svgs[2].querySelectorAll('polygon');
+    const l2texts = svgs[2].querySelectorAll('text');
+    if (n === 2) {
+      l2path.setAttribute('stroke', '#C4704A');
+      l2polys[0].style.fill = '#C4704A';
+      l2polys[1].style.fill = '#D4956B';
+      l2texts[0].setAttribute('fill', '#FAF7F4');
+      l2texts[1].setAttribute('fill', '#D4956B');
+    } else {
+      l2path.setAttribute('stroke', '#2D3A4A');
+      l2polys[0].style.fill = '';
+      l2polys[1].style.fill = '#5A6A6A';
+      l2texts[0].setAttribute('fill', '#2D3A4A');
+      l2texts[1].setAttribute('fill', '#8A7968');
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (currentSection < 7) goTo(currentSection + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (currentSection > 0) goTo(currentSection - 1);
+    }
+  });
+</script>
+</body>
+</html>
